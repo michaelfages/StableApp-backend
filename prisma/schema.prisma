@@ -12,4 +12,30 @@ model User {
   email     String   @unique
   password  String
   createdAt DateTime @default(now())
+  profile   Profile?
+}
+
+model Profile {
+  id                  Int     @id @default(autoincrement())
+  userId              Int     @unique
+  user                User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profileJson         String? // For non-searchable profile content (bio, photos, etc.)
+  firstName           String
+  lastNameInitial     String
+  pronouns            String
+  genderIdentity      String
+  orientation         String
+  miniInventories     String? // JSON blob
+  fourPrompts         String? // JSON blob
+  homeCity            String
+  matchRadius         Int
+  typicalNights       String
+  isProfileComplete   Boolean @default(false)
+}
+
+model Cohort {
+  id             Int      @id @default(autoincrement())
+  members        String   // JSON array of user IDs
+  weekStartDate  DateTime
+  isLocked       Boolean  @default(false)
 }
